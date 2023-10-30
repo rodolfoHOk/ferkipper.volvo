@@ -23,7 +23,7 @@
 ### Commands
 
 - in first time install dependencies: npm install
-- run app: npm run start
+- run app: npm run dev
 
 ### Host and Port
 
