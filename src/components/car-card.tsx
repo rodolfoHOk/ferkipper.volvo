@@ -1,4 +1,4 @@
-import { Block, Flex, Link, Spacer, Text } from 'vcc-ui';
+import { Flex, Link, Spacer, Text } from 'vcc-ui';
 import { Car } from '@/model/car.model';
 import Image from 'next/image';
 

@@ -1,7 +1,7 @@
+import { Flex } from 'vcc-ui';
 import { getCars } from '@/services/get-cars.services';
 import { CarCard } from '@/components/car-card';
 import '../../public/css/styles.css';
-import { Flex } from 'vcc-ui';
 
 export default async function Home() {
   const cars = await getCars();
