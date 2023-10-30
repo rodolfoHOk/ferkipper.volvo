@@ -1,13 +1,16 @@
-import { Block, Button } from 'vcc-ui';
+import { getCars } from '@/services/get-cars.services';
+import { CarCard } from '@/components/car-card';
 import '../../public/css/styles.css';
+import { Flex } from 'vcc-ui';
 
-export default function Home() {
+export default async function Home() {
+  const cars = await getCars();
+
   return (
-    <main>
-      <h1>Hello World!</h1>
-      <Block extend={{ padding: 20 }}>
-        <Button>Click me!</Button>
-      </Block>
-    </main>
+    <Flex extend={{ margin: 32, flexDirection: 'row', gap: 24 }}>
+      {cars.map((car) => (
+        <CarCard key={car.id} car={car} />
+      ))}
+    </Flex>
   );
 }

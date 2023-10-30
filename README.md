@@ -8,11 +8,18 @@
 
 [Github Repository](https://github.com/volvo-cars/god-frontend-code-test)
 
+[Volvo Cars Design System](https://vcc-ui.vercel.app/docs)
+
+[VCC UI Storybook](https://vcc-ui-storybook.vercel.app/)
+
+[Site da Volvo para referência](https://www.volvocars.com/br/)
+
 ## Technologies
 
 - Typescript
 - React Js
 - Next Js
+- VCC UI (Volvo Cars Design System)
 
 ## How to Run
 
