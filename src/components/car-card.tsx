@@ -60,10 +60,10 @@ export function CarCard({ car, pageWidth }: CarCardProps) {
           justifyContent: 'center',
         }}
       >
-        <Link href="" arrow="right">
+        <Link href={`/learn/${car.id}`} arrow="right">
           LEARN
         </Link>
-        <Link href="" arrow="right">
+        <Link href={`/shop/${car.id}`} arrow="right">
           SHOP
         </Link>
       </Flex>

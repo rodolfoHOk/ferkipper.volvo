@@ -13,10 +13,11 @@ interface CarrouselProps {
 
 export function Carrousel({ cars }: CarrouselProps) {
   const [selected, setSelected] = useState(0);
-  const [pageWidth, setPageWidth] = useState(window.innerWidth);
+  const [pageWidth, setPageWidth] = useState(window ? window.innerWidth : 0);
 
   useEffect(() => {
-    const handleResize = () => setPageWidth(window.innerWidth);
+    const handleResize = () =>
+      setPageWidth(window !== undefined ? window.innerWidth : 0);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
