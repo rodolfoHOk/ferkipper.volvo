@@ -4,16 +4,35 @@ import Image from 'next/image';
 
 export interface CarCardProps {
   car: Car;
+  pageWidth: number;
 }
 
-export function CarCard({ car }: CarCardProps) {
+export function CarCard({ car, pageWidth }: CarCardProps) {
   return (
-    <Flex extend={{ width: 300 }}>
+    <Flex
+      extend={{
+        minWidth:
+          pageWidth > 1024 && pageWidth < 1280
+            ? 'calc(25% - 18px)'
+            : pageWidth >= 1280
+            ? '300'
+            : pageWidth <= 1024 && pageWidth > 480
+            ? 'calc(40% - 24px)'
+            : 'calc(80% - 16px)',
+        maxWidth: 300,
+        flexDirection: 'column',
+      }}
+    >
       <Text extend={{ color: 'rgba(0, 0, 0, 0.64)' }} subStyle="emphasis">
         {car.bodyType.toUpperCase()}
       </Text>
 
-      <Flex extend={{ flexDirection: 'row' }}>
+      <Flex
+        extend={{
+          flexDirection: 'row',
+          height: '100%',
+        }}
+      >
         <Text variant="amundsen">{car.modelName}</Text>
         <Spacer size={0.5} />
         <Text subStyle="inline-link">{car.modelType}</Text>
@@ -21,8 +40,14 @@ export function CarCard({ car }: CarCardProps) {
       <Spacer />
 
       <Image
-        width={300}
-        height={225}
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: 'auto',
+          maxWidth: pageWidth >= 1024 ? 300 : 400,
+        }}
+        width={800}
+        height={600}
         src={car.imageUrl}
         alt={`image: ${car.modelName}`}
       />

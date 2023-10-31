@@ -13,7 +13,7 @@ interface CarrouselProps {
 
 export function Carrousel({ cars }: CarrouselProps) {
   const [selected, setSelected] = useState(0);
-  const [pageWidth, setPageWidth] = useState(0);
+  const [pageWidth, setPageWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => setPageWidth(window.innerWidth);
@@ -22,48 +22,49 @@ export function Carrousel({ cars }: CarrouselProps) {
   }, []);
 
   function paginationClick(dir: 'left' | 'right') {
-    let cardList = document.getElementById('card-list');
-    let card = cardList?.firstElementChild;
+    const cardList = document.getElementById('card-list');
+    const card = cardList?.firstElementChild;
     let cardSize = (card?.clientWidth ?? 0) + 24;
     let scrollPosition = cardList?.scrollLeft ?? 0;
     if (dir === 'left') {
-      cardList?.scrollTo({ left: scrollPosition - cardSize });
+      cardList?.scrollTo({
+        left: scrollPosition - cardSize,
+        behavior: 'smooth',
+      });
     } else {
-      cardList?.scrollTo({ left: scrollPosition + cardSize });
+      cardList?.scrollTo({
+        left: scrollPosition + cardSize,
+        behavior: 'smooth',
+      });
     }
   }
 
   function navigationClick(index: number) {
-    let cardList = document.getElementById('card-list');
-    let card = cardList?.firstElementChild;
-    let cardSize = (card?.clientWidth ?? 0) + 24;
-    cardList?.scrollTo({ left: index * cardSize });
-
+    const cardList = document.getElementById('card-list');
+    const card = cardList?.firstElementChild;
+    let cardSize = (card?.clientWidth ?? 0) + (pageWidth > 480 ? 24 : 16);
+    cardList?.scrollTo({ left: index * cardSize, behavior: 'smooth' });
     setSelected(index);
-
-    console.log(window.innerWidth);
   }
 
   return (
     <Flex
       extend={{
-        width: '100%',
-        maxWidth: '80%',
-        margin: '0 auto',
+        maxWidth: 1280,
+        margin: pageWidth >= 1280 ? '0 auto' : '0 24px',
         flexDirection: 'column',
       }}
     >
       <Flex
         id="card-list"
         extend={{
-          width: '100%',
           flexDirection: 'row',
-          gap: 24,
+          gap: pageWidth > 480 ? 24 : 16,
           overflow: 'hidden',
         }}
       >
         {cars.map((car) => (
-          <CarCard key={car.id} car={car} />
+          <CarCard key={car.id} car={car} pageWidth={pageWidth} />
         ))}
       </Flex>
 
