@@ -9,3 +9,9 @@ export async function getCars(): Promise<Car[]> {
   });
   return response.json();
 }
+
+export async function getCarById(id: string): Promise<Car> {
+  const carsList = await getCars();
+  const foundedCar = carsList.filter((car) => car.id === id);
+  return foundedCar[0];
+}
