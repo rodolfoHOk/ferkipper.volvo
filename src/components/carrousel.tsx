@@ -5,7 +5,7 @@ import { CarCard } from './car-card';
 import { DesktopPagination } from './desktop-pagination';
 import { Car } from '@/model/car.model';
 import { MobilePagination } from './mobile-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CarrouselProps {
   cars: Car[];
@@ -13,6 +13,13 @@ interface CarrouselProps {
 
 export function Carrousel({ cars }: CarrouselProps) {
   const [selected, setSelected] = useState(0);
+  const [pageWidth, setPageWidth] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => setPageWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   function paginationClick(dir: 'left' | 'right') {
     let cardList = document.getElementById('card-list');
@@ -33,6 +40,8 @@ export function Carrousel({ cars }: CarrouselProps) {
     cardList?.scrollTo({ left: index * cardSize });
 
     setSelected(index);
+
+    console.log(window.innerWidth);
   }
 
   return (
@@ -58,16 +67,18 @@ export function Carrousel({ cars }: CarrouselProps) {
         ))}
       </Flex>
 
-      <DesktopPagination
-        onClickLeft={() => paginationClick('left')}
-        onClickRight={() => paginationClick('right')}
-      />
-
-      <MobilePagination
-        total={cars.length}
-        selected={selected}
-        onClickNavigation={navigationClick}
-      />
+      {pageWidth >= 1024 ? (
+        <DesktopPagination
+          onClickLeft={() => paginationClick('left')}
+          onClickRight={() => paginationClick('right')}
+        />
+      ) : (
+        <MobilePagination
+          total={cars.length}
+          selected={selected}
+          onClickNavigation={navigationClick}
+        />
+      )}
     </Flex>
   );
 }
