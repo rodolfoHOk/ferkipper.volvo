@@ -1,6 +1,6 @@
 import Image from 'next/image';
+import { Block, Button, Flex, Text, View } from 'vcc-ui';
 import { getCarById } from '@/services/get-cars.services';
-import { Block, Button, Flex, Row, Spacer, Text, View } from 'vcc-ui';
 
 interface QueryParams {
   carId: string;
@@ -15,7 +15,7 @@ export default async function Shop({ params }: { params: QueryParams }) {
         padding: '32px 16px',
         display: 'flex',
         width: '100vw',
-        height: '100vh',
+        height: 'calc(100vh - 40px)',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',

@@ -15,7 +15,7 @@ export default async function Learn({ params }: { params: QueryParams }) {
         padding: '32px 16px',
         display: 'flex',
         width: '100vw',
-        height: '100vh',
+        height: 'calc(100vh - 40px)',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',

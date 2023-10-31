@@ -10,7 +10,7 @@ export default async function Home() {
     <Flex
       extend={{
         width: '100vw',
-        height: '100vh',
+        height: 'calc(100vh - 40px)',
         paddingTop: 64,
         flexDirection: 'column',
         alignItems: 'center',
