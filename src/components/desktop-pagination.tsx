@@ -13,8 +13,6 @@ export function DesktopPagination({
     <Flex
       extend={{
         width: '100%',
-        maxWidth: '80%',
-        margin: '0 auto',
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',

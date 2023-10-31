@@ -1,6 +1,6 @@
 import { Flex, Spacer, Text } from 'vcc-ui';
 import { getCars } from '@/services/get-cars.services';
-import { CarCard } from '@/components/car-card';
+import { Carrousel } from '@/components/carrousel';
 import '../../public/css/styles.css';
 
 export default async function Home() {
@@ -13,7 +13,6 @@ export default async function Home() {
         height: '100vh',
         paddingTop: 64,
         flexDirection: 'column',
-        justifyContent: 'flex-start',
         alignItems: 'center',
       }}
     >
@@ -22,20 +21,7 @@ export default async function Home() {
       </Text>
       <Spacer size={8} />
 
-      <Flex
-        extend={{
-          maxWidth: '80%',
-          width: '100%',
-          margin: '0 auto',
-          flexDirection: 'row',
-          gap: 24,
-          overflow: 'hidden',
-        }}
-      >
-        {cars.map((car) => (
-          <CarCard key={car.id} car={car} />
-        ))}
-      </Flex>
+      <Carrousel cars={cars} />
     </Flex>
   );
 }
