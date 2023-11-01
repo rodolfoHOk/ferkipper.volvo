@@ -29,7 +29,7 @@ export function CarCard({ car, pageWidth }: CarCardProps) {
 
       <Flex
         extend={{
-          flexDirection: 'row',
+          flexDirection: pageWidth < 1024 ? 'column' : 'row',
           height: '100%',
         }}
       >
