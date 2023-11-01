@@ -19,7 +19,8 @@ export function Filter({ cars, changeFilteredCars }: FilterProps) {
       filteredCars = cars.filter((cars) => cars.bodyType === selected);
     }
     changeFilteredCars(filteredCars);
-  }, [cars, selected, changeFilteredCars]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cars, selected]);
 
   return (
     <Flex extend={{ minWidth: 200, maxWidth: 200, alignSelf: 'center' }}>

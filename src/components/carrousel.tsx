@@ -16,13 +16,9 @@ export function Carrousel({ cars }: CarrouselProps) {
   const [selected, setSelected] = useState(0);
   const [pageWidth, setPageWidth] = useState(window ? window.innerWidth : 0);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
-
-  useEffect(() => {
-    const handleResize = () =>
-      setPageWidth(window !== undefined ? window.innerWidth : 0);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const [position, setPosition] = useState<
+    'start' | 'end' | 'other' | 'start-end'
+  >('start');
 
   function paginationClick(dir: 'left' | 'right') {
     const cardList = document.getElementById('card-list');
@@ -34,11 +30,25 @@ export function Carrousel({ cars }: CarrouselProps) {
         left: scrollPosition - cardSize,
         behavior: 'smooth',
       });
+      if (scrollPosition <= cardSize) {
+        setPosition('start');
+      } else {
+        setPosition('other');
+      }
     } else {
       cardList?.scrollTo({
         left: scrollPosition + cardSize,
         behavior: 'smooth',
       });
+      if (
+        cardList &&
+        scrollPosition + cardList?.clientWidth + cardSize >=
+          cardList.scrollWidth
+      ) {
+        setPosition('end');
+      } else {
+        setPosition('other');
+      }
     }
   }
 
@@ -50,9 +60,35 @@ export function Carrousel({ cars }: CarrouselProps) {
     setSelected(index);
   }
 
+  function checkWidths() {
+    setTimeout(() => {
+      const cardList = document.getElementById('card-list');
+      const cardListSize = cardList?.clientWidth ?? 0;
+      const scrollSize = cardList?.scrollWidth ?? 0;
+      console.log(cardListSize, scrollSize);
+      if (cardListSize < scrollSize) {
+        setPosition('start');
+      } else {
+        setPosition('start-end');
+      }
+    }, 100);
+  }
+
   function changeFilteredCars(cars: Car[]) {
     setFilteredCars(cars);
+    checkWidths();
   }
+
+  useEffect(() => {
+    const handleResize = () =>
+      setPageWidth(window !== undefined ? window.innerWidth : 0);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    checkWidths();
+  }, []);
 
   return (
     <Flex
@@ -80,6 +116,7 @@ export function Carrousel({ cars }: CarrouselProps) {
       {filteredCars.length > 0 &&
         (pageWidth >= 1024 ? (
           <DesktopPagination
+            position={position}
             onClickLeft={() => paginationClick('left')}
             onClickRight={() => paginationClick('right')}
           />
