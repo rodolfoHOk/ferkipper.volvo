@@ -65,7 +65,6 @@ export function Carrousel({ cars }: CarrouselProps) {
       const cardList = document.getElementById('card-list');
       const cardListSize = cardList?.clientWidth ?? 0;
       const scrollSize = cardList?.scrollWidth ?? 0;
-      console.log(cardListSize, scrollSize);
       if (cardListSize < scrollSize) {
         setPosition('start');
       } else {
@@ -77,6 +76,16 @@ export function Carrousel({ cars }: CarrouselProps) {
   function changeFilteredCars(cars: Car[]) {
     setFilteredCars(cars);
     checkWidths();
+  }
+
+  function calculateMobilePaginationLength(): number {
+    const cardList = document.getElementById('card-list');
+    const card = cardList?.firstElementChild;
+    const listSize = cardList?.clientWidth ?? 0;
+    const cardSize = (card?.clientWidth ?? 0) + 24;
+    const numberOfCardInScreen = Math.trunc(listSize / cardSize);
+
+    return filteredCars.length - numberOfCardInScreen + 1;
   }
 
   useEffect(() => {
@@ -122,7 +131,7 @@ export function Carrousel({ cars }: CarrouselProps) {
           />
         ) : (
           <MobilePagination
-            total={filteredCars.length}
+            total={calculateMobilePaginationLength()}
             selected={selected}
             onClickNavigation={navigationClick}
           />
