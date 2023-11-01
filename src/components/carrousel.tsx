@@ -15,7 +15,7 @@ interface CarrouselProps {
 export function Carrousel({ cars }: CarrouselProps) {
   const [selected, setSelected] = useState(0);
   const [pageWidth, setPageWidth] = useState(window ? window.innerWidth : 0);
-  const [filteredCars, setFilteredCars] = useState<Car[]>([]);
+  const [filteredCars, setFilteredCars] = useState<Car[]>([...cars]);
   const [position, setPosition] = useState<
     'start' | 'end' | 'other' | 'start-end'
   >('start');
@@ -92,6 +92,7 @@ export function Carrousel({ cars }: CarrouselProps) {
     const handleResize = () =>
       setPageWidth(window !== undefined ? window.innerWidth : 0);
     window.addEventListener('resize', handleResize);
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -106,8 +107,8 @@ export function Carrousel({ cars }: CarrouselProps) {
         setSelected(numberOfScrolledCards);
       }, 1000);
     };
-
     window.addEventListener('touchmove', handleMobileScroll);
+
     return () => window.removeEventListener('touchmove', handleMobileScroll);
   }, [pageWidth]);
 
