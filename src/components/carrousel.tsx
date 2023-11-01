@@ -82,7 +82,7 @@ export function Carrousel({ cars }: CarrouselProps) {
     const cardList = document.getElementById('card-list');
     const card = cardList?.firstElementChild;
     const listSize = cardList?.clientWidth ?? 0;
-    const cardSize = (card?.clientWidth ?? 0) + 24;
+    const cardSize = (card?.clientWidth ?? 0) + (pageWidth > 480 ? 24 : 16);
     const numberOfCardInScreen = Math.trunc(listSize / cardSize);
 
     return filteredCars.length - numberOfCardInScreen + 1;
@@ -94,6 +94,22 @@ export function Carrousel({ cars }: CarrouselProps) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    const handleMobileScroll = () => {
+      setTimeout(() => {
+        const cardList = document.getElementById('card-list');
+        const card = cardList?.firstElementChild;
+        const cardSize = (card?.clientWidth ?? 0) + (pageWidth > 480 ? 24 : 16);
+        const scrollLeft = cardList?.scrollLeft ?? 0;
+        const numberOfScrolledCards = Math.ceil(scrollLeft / cardSize);
+        setSelected(numberOfScrolledCards);
+      }, 1000);
+    };
+
+    window.addEventListener('touchmove', handleMobileScroll);
+    return () => window.removeEventListener('touchmove', handleMobileScroll);
+  }, [pageWidth]);
 
   useEffect(() => {
     checkWidths();
@@ -109,12 +125,14 @@ export function Carrousel({ cars }: CarrouselProps) {
       }}
     >
       <Filter cars={cars} changeFilteredCars={changeFilteredCars} />
+
       <Flex
         id="card-list"
         extend={{
           flexDirection: 'row',
           gap: pageWidth > 480 ? 24 : 16,
-          overflow: 'hidden',
+          overflow: 'auto',
+          scrollbarWidth: 'none',
         }}
       >
         {filteredCars.map((car) => (
