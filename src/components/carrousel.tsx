@@ -6,6 +6,7 @@ import { DesktopPagination } from './desktop-pagination';
 import { Car } from '@/model/car.model';
 import { MobilePagination } from './mobile-pagination';
 import { useEffect, useState } from 'react';
+import { Filter } from './filter';
 
 interface CarrouselProps {
   cars: Car[];
@@ -14,6 +15,7 @@ interface CarrouselProps {
 export function Carrousel({ cars }: CarrouselProps) {
   const [selected, setSelected] = useState(0);
   const [pageWidth, setPageWidth] = useState(window ? window.innerWidth : 0);
+  const [filteredCars, setFilteredCars] = useState<Car[]>([]);
 
   useEffect(() => {
     const handleResize = () =>
@@ -48,14 +50,20 @@ export function Carrousel({ cars }: CarrouselProps) {
     setSelected(index);
   }
 
+  function changeFilteredCars(cars: Car[]) {
+    setFilteredCars(cars);
+  }
+
   return (
     <Flex
       extend={{
         maxWidth: 1280,
         margin: pageWidth >= 1280 ? '0 auto' : '0 24px',
         flexDirection: 'column',
+        gap: 32,
       }}
     >
+      <Filter cars={cars} changeFilteredCars={changeFilteredCars} />
       <Flex
         id="card-list"
         extend={{
@@ -64,23 +72,24 @@ export function Carrousel({ cars }: CarrouselProps) {
           overflow: 'hidden',
         }}
       >
-        {cars.map((car) => (
+        {filteredCars.map((car) => (
           <CarCard key={car.id} car={car} pageWidth={pageWidth} />
         ))}
       </Flex>
 
-      {pageWidth >= 1024 ? (
-        <DesktopPagination
-          onClickLeft={() => paginationClick('left')}
-          onClickRight={() => paginationClick('right')}
-        />
-      ) : (
-        <MobilePagination
-          total={cars.length}
-          selected={selected}
-          onClickNavigation={navigationClick}
-        />
-      )}
+      {filteredCars.length > 0 &&
+        (pageWidth >= 1024 ? (
+          <DesktopPagination
+            onClickLeft={() => paginationClick('left')}
+            onClickRight={() => paginationClick('right')}
+          />
+        ) : (
+          <MobilePagination
+            total={filteredCars.length}
+            selected={selected}
+            onClickNavigation={navigationClick}
+          />
+        ))}
     </Flex>
   );
 }
